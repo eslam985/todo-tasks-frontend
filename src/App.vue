@@ -8,7 +8,7 @@ const authStore = useAuthStore()
 <template>
     <div v-if="!authStore.isInitialized" class="splash-screen">
         <div class="spinner"></div>
-        <p>جاري تهيئة النظام وأمان الجلسة...</p>
+        <p>Loading...</p>
     </div>
 
     <div v-else>

@@ -4,9 +4,6 @@ import { useTasksStore } from '@/stores/tasksStore'
 
 const tasksStore = useTasksStore()
 
-onMounted(async () => {
-    await tasksStore.getAllTasks()
-})
 
 const completeTasksCount = computed(() => {
     if (!Array.isArray(tasksStore.tasks) || tasksStore.tasks?.length < 1) return
@@ -36,6 +33,11 @@ const refreshData = () => {
     tasksStore.searchResults = []
     tasksStore.getAllTasks()
 }
+
+onMounted(async () => {
+    await tasksStore.getAllTasks()
+})
+
 </script>
 
 <template>
@@ -108,7 +110,7 @@ const refreshData = () => {
                 <div
                     v-for="task in (tasksStore.searchResults?.length > 0
                         ? tasksStore.searchResults
-                        : tasksStore.tasks) ?? []"
+                        : tasksStore.tasks ?? []) ?? []"
                     :key="task.id"
                     class="flex flex-col justify-between gap-4 bg-background border border-custom-border hover:border-accent/40 rounded-xl p-3 md:p-5 shadow-sm transition-all"
                 >
@@ -125,7 +127,7 @@ const refreshData = () => {
                                 class="font-bold text-base sm:text-lg text-title"
                                 :class="task.status === 'completed' ? ' line-through' : ''"
                             >
-                                {{ task.title }}
+                                {{ task.title ?? 'unknown'}}
                             </h3>
                         </div>
 

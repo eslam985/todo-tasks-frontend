@@ -31,18 +31,20 @@ export const useTasksStore = defineStore('tasks', {
         isLoadingState: () => computed(() => this?.isCooldown === true || this?.isLoading === true),
     },
     actions: {
-        async getAllTasks(page = 1) {
+        async getAllTasks(pageNum = 1) {
             try {
-                if (this.isCooldown || this.isLoading) return
-
                 this.isLoading = true
-                const data = await fetchAllTasksFromApi(page)
-                if (!data) return
 
-                this.tasks = data.tasks
-                this.totalTasks = data.total
-                this.currentPage = data.page
-                this.totalPages = data.totalPage
+                const result = await fetchAllTasksFromApi(pageNum)
+                console.log(result)
+                if (!result.success || !result.data) return
+
+                const { tasks, total, page, totalPage } = result.data
+
+                this.tasks = tasks ?? null
+                this.totalTasks = total ?? null
+                this.currentPage = page ?? null
+                this.totalPages = totalPage ?? null
 
                 return true
             } catch (error) {
@@ -88,6 +90,7 @@ export const useTasksStore = defineStore('tasks', {
         },
         async addNewTask(taskData) {
             try {
+                this.isLoading = true
                 const newTask = await setNewTask(taskData)
                 if (!newTask) return
 
@@ -119,8 +122,6 @@ export const useTasksStore = defineStore('tasks', {
         },
         async editTask(idParams, taskData) {
             if (!idParams || !taskData) return
-
-            if (this.isCooldown || this.isLoading) return
 
             this.isLoading = true
             try {
@@ -154,7 +155,7 @@ export const useTasksStore = defineStore('tasks', {
         },
         async deleteTask(idParams) {
             if (!idParams) return false
-
+            this.isLoading = true
             const index = this.tasks.findIndex((task) => task._id === idParams)
             if (index === -1) return false
 
@@ -199,21 +200,23 @@ export const useTasksStore = defineStore('tasks', {
         },
 
         async changesTaskStatus(idParams, statusData = null) {
-            if (!idParams) return
+            if (!idParams) return false
 
             const index = this.tasks.findIndex((task) => task._id === idParams)
-            if (index === -1) return
+
+            if (index === -1) return false
 
             const oldStatus = this.tasks[index].status
 
             this.tasks[index].status = statusData ?? 'pending'
 
             try {
-                const updatedTask = await taskStatus(idParams, statusData)
+                const result = await taskStatus(idParams, statusData)
 
-                if (updatedTask) {
-                    this.tasks[index] = updatedTask
-                }
+                if (!result.data || !result.success) return false
+
+                this.tasks[index] = result.data
+
                 return true
             } catch (error) {
                 this.tasks[index].status = oldStatus
@@ -233,6 +236,7 @@ export const useTasksStore = defineStore('tasks', {
 
                 this.isLoading = true
                 const response = await removeAllTasks()
+                console.log('response: ', response )
                 if (!response) return
 
                 if (response.status === 204 || response.status === 200) {

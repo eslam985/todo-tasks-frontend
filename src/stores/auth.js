@@ -24,9 +24,13 @@ export const useAuthStore = defineStore('auth', {
             this.isLoading = true
 
             try {
-                const data = await refresh()
+                const result = await refresh()
 
-                this.setAccessToken(data.accessToken)
+                if (!result.success) return false
+                const accessToken = result.data && result.success ? result.data.accessToken : null
+                if (!accessToken) return false
+
+                this.setAccessToken(result.data.accessToken)
                 return true
             } catch (error) {
                 const status = error.response?.status
@@ -43,11 +47,16 @@ export const useAuthStore = defineStore('auth', {
         async loginUser(credentials) {
             try {
                 this.errorMessage = ''
-                console.log(credentials)
-                const data = await login(credentials)
-                console.log(data)
+                const result = await login(credentials)
 
-                this.accessToken = data.accessToken
+                if (!result.success) return false
+
+                const accessToken = result.data && result.success ? result.data.accessToken : null
+
+                this.setAccessToken(accessToken)
+
+                if (!this.accessToken) return false
+
                 return true
             } catch (error) {
                 this.errorMessage =
