@@ -9,8 +9,10 @@ const router = useRouter()
 const route = useRoute()
 
 const taskId = route.params.id
-const isEdit = route.path.includes('edit-task')
-const isAdd = route.path.includes('new-task')
+
+const isEdit = route.name === 'EditTask'
+const isAdd = route.name === 'addTask'
+
 const isLoading = tasksStore?.isLoadingState
 
 const formDate = ref({
@@ -39,7 +41,7 @@ const handleAddTask = async () => {
 
     tasksStore.triggerNotification(`Success: Task "${formDate.value.title}" Added ✅`)
 
-    router.push('/tasks')
+    await router.replace({ name: 'TasksList', query: { page: 1, limit: 20 } })
 }
 
 const handleEditTask = async () => {
@@ -56,7 +58,7 @@ const handleEditTask = async () => {
 
     tasksStore.triggerNotification(`Success: Task "${formDate.value.title}" Editing ✅`)
 
-    router.push('/tasks')
+    await router.replace({ name: 'TasksList', query: { page: 1, limit: 20 } })
 }
 
 const targetSubmet = () => {
@@ -66,7 +68,8 @@ const targetSubmet = () => {
 }
 
 const FilledDataFields = () => {
-    if (!taskId) return
+    if (!taskId && !isEdit) return
+    console.log('taskId: ', taskId)
 
     tasksStore.getTaskById(taskId)
     const targetTask = tasksStore.currentTask
@@ -78,12 +81,15 @@ const FilledDataFields = () => {
 }
 
 onMounted(() => {
+    console.log('route.name: ', route.name)
     FilledDataFields()
 })
 
 watch(
     () => tasksStore.tasks,
     () => {
+        if (isAdd || !taskId) return
+
         FilledDataFields()
     },
     { deep: true },
@@ -140,11 +146,6 @@ watch(
                             >description / وصف المهمة</label
                         >
                         <div class="relative">
-                            <font-awesome-icon
-                                icon="fa-solid fa-align-left"
-                                class="absolute left-4 top-4 text-sub/50 text-sm"
-                            />
-
                             <textarea
                                 id="description"
                                 placeholder="Write some details about this task..."
@@ -155,12 +156,8 @@ watch(
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                        <button
-                            type="button"
-                            @click="router.push('/tasks')"
-                            class="w-full sm:w-1/3 bg-background border border-custom-border hover:bg-sub/5 text-title font-medium py-3 rounded-xl transition-colors"
-                        >
+                    <div class="flex gap-3 pt-2">
+                        <button type="button" @click="router.push('/tasks')" class="btn-secondary">
                             Cancel / إلغاء
                         </button>
 

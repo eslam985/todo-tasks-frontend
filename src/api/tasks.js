@@ -1,6 +1,6 @@
 import api from './interceptors'
 
-export const getAllTasks = async (page = 1, limit = 20) => {
+export const getAllTasks = async ({ page = 1, limit = 20 }) => {
     const response = await api.get('/tasks', { params: { page, limit } })
     return response.data
 }

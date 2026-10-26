@@ -17,12 +17,12 @@ const store = useTasksStore()
             </div>
 
             <router-link
-                exact-active-class="bg-accent! text-white! font-semibold shadow-md shadow-accent/20"
+                exact-active-class="btn-primary text-accent! bg-background"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl text-sub hover:bg-sidebar-hover hover:text-white transition-all duration-200 text-sm"
-                :to="{ name: 'TasksList' }"
+                :to="{ name: 'TasksList', query: { page: 1, limit: 20 } }"
             >
                 <font-awesome-icon icon="fa-solid fa-users" class="text-base w-5" />
-                <span>tasl Directory</span>
+                <span>Tasks List</span>
             </router-link>
         </aside>
     </main>

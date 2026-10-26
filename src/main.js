@@ -56,7 +56,6 @@ library.add(
     faMagnifyingGlass,
     faRightFromBracket,
     faBars,
-
 )
 
 const app = createApp(App)

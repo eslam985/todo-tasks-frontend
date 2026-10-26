@@ -2,13 +2,14 @@
 import { ref } from 'vue'
 
 import { useAuthStore } from '@/stores/auth.js'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 import { useTasksStore } from '@/stores/tasksStore'
 
 const tasksStore = useTasksStore()
 const authStore = useAuthStore()
 const router = useRouter()
+const route = useRoute()
 
 const handleLogoutClick = async () => {
     await authStore.logoutUser()
@@ -30,18 +31,31 @@ const HandleSearch = () => {
 
     searchInput.value = ''
 }
+
+const refreshData = async () => {
+    tasksStore.searchResults = []
+
+    if (Number(route.query.page) !== 1) {
+        await router.replace({ name: 'TasksList', query: { page: 1, limit: 20 } })
+    } else {
+        await tasksStore.getAllTasks({ page: 1, limit: 20 }, true)
+    }
+}
 </script>
 <template>
     <header
-        class="h-16 bg-card border-b border-custom-border px-2 md:px-6 flex items-center justify-between sticky top-0 z-40 shadow-sm"
+        class="h-16 bg-card border-b border-custom-border px-2 md:px-3 flex items-center justify-between sticky top-0 z-40 shadow-sm"
     >
         <div class="flex items-center gap-2 md:gap-4">
-            <button class="btn-primary p-2" @click="tasksStore.openSide">
+            <button
+                class="bg-accent text-white p-1 rounded cursor-pointer"
+                @click="tasksStore.openSide"
+            >
                 <font-awesome-icon icon="fa-solid  fa-bars" class="text-base w-5" />
             </button>
-            <router-link to="/" class="flex items-center gap-2">
-                <h1 class="text-title font-bold text-lg tracking-wider">Tasks</h1>
-            </router-link>
+            <div class="btn-primary flex items-center gap-2 cursor-pointer">
+                <h1 @click="refreshData" class="font-bold text-lg tracking-wider">Todo App</h1>
+            </div>
         </div>
 
         <div class="relative w-full max-w-md hidden sm:block">
@@ -71,7 +85,9 @@ const HandleSearch = () => {
                 class="text-xs font-semibold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5"
             >
                 <font-awesome-icon icon="fa-solid fa-right-from-bracket" />
-                <span>{{ authStore.isLoading ? 'جاري الخروج...' : 'تسجيل الخروج' }}</span>
+                <span class="text-xs md:text-sm">{{
+                    authStore.isLoading ? 'جاري الخروج...' : 'تسجيل الخروج'
+                }}</span>
             </button>
         </div>
     </header>
