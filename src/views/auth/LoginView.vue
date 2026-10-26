@@ -38,7 +38,7 @@ const handleSubmit = async () => {
         class="min-h-screen bg-background flex items-center justify-center p-4 sm:p-6 select-none relative"
     >
         <div
-            class="w-full max-w-md bg-card rounded-2xl border border-custom-border shadow-xl p-8 space-y-6"
+            class="w-full max-w-md bg-[#ffffff9c] rounded-2xl border border-custom-border shadow-xl p-8 space-y-6"
         >
             <div class="text-center space-y-2">
                 <div
@@ -76,11 +76,6 @@ const handleSubmit = async () => {
                 <div class="flex flex-col gap-1.5">
                     <div class="flex justify-between items-center">
                         <label for="password" class="form-label mb-0">Password / كلمة المرور</label>
-                        <a
-                            href="#"
-                            class="text-xs font-semibold text-accent hover:text-accent-dark transition-colors"
-                            >Forgot password?</a
-                        >
                     </div>
                     <div class="relative">
                         <font-awesome-icon
@@ -105,7 +100,7 @@ const handleSubmit = async () => {
                 <button
                     type="submit"
                     class="btn-primary w-full mt-4 flex items-center justify-center gap-2"
-                    :disabled="authStore.isLoading"
+                    :disabled="authStore.isLoading || !password || !email"
                 >
                     <font-awesome-icon
                         v-if="authStore.isLoading"
