@@ -54,7 +54,7 @@ const refreshData = async () => {
                 <font-awesome-icon icon="fa-solid  fa-bars" class="text-base w-5" />
             </button>
             <div class="btn-primary flex items-center gap-2 cursor-pointer">
-                <h1 @click="refreshData" class="font-bold text-lg tracking-wider">Todo App</h1>
+                <h1 @click="refreshData" class="font-bold text-sm md:text-lg tracking-wider">Todo App</h1>
             </div>
         </div>
 

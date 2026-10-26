@@ -47,8 +47,6 @@ const handleAddTask = async () => {
 const handleEditTask = async () => {
     if (!isEdit) return
 
-    console.log('formDate.value', formDate.value)
-
     const isSuccess = await tasksStore.editTask(taskId, formDate.value)
 
     if (!isSuccess) {
@@ -69,7 +67,6 @@ const targetSubmet = () => {
 
 const FilledDataFields = () => {
     if (!taskId && !isEdit) return
-    console.log('taskId: ', taskId)
 
     tasksStore.getTaskById(taskId)
     const targetTask = tasksStore.currentTask
@@ -81,7 +78,6 @@ const FilledDataFields = () => {
 }
 
 onMounted(() => {
-    console.log('route.name: ', route.name)
     FilledDataFields()
 })
 

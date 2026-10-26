@@ -38,7 +38,6 @@ export const useTasksStore = defineStore('tasks', {
 
             try {
                 this.isLoading = true
-                console.log('queryParams: ', queryParams)
                 const result = await fetchAllTasksFromApi(queryParams)
                 if (!result.success || !result.data) return
 
