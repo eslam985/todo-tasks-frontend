@@ -14,7 +14,7 @@ const route = useRoute()
 const handleLogoutClick = async () => {
     await authStore.logoutUser()
 
-    tasksStore.triggerNotification('تم تسجيل الخروج بأمان.')
+    tasksStore.triggerNotification('تم تسجيل الخروج بنجاح.')
 
     router.push('/login')
 }

@@ -122,7 +122,7 @@ watch(
                     >
                         Total Tasks:
                         <span class="text-accent font-bold">
-                            {{ tasksStore.pagination.totalTasks ?? tasksStore.tasks.length ?? 0 }}
+                            {{ tasksStore.pagination?.total ?? tasksStore.tasks?.length ?? 0 }}
                         </span>
                     </div>
                     <div

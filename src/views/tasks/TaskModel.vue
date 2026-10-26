@@ -100,9 +100,7 @@ watch(
         </div>
 
         <div v-else class="bg-background flex items-center justify-center select-none p-3">
-            <div
-                class="w-full max-w-xl bg-card rounded-2xl border border-custom-border shadow-xl p-2 md:p-6 space-y-6"
-            >
+            <div class="w-full max-w-xl bg-card rounded-2xl border border-custom-border shadow-xl p-2 md:p-6 space-y-6">
                 <div class="text-center space-y-2">
                     <h2 class="text-2xl font-bold text-title tracking-tight">
                         {{
@@ -118,55 +116,36 @@ watch(
 
                 <form @submit.prevent="targetSubmet" class="space-y-5">
                     <div class="flex flex-col gap-1.5">
-                        <label for="title" class="form-label font-semibold text-title text-sm"
-                            >Task Name / اسم المهمة</label
-                        >
+                        <label for="title" class="form-label font-semibold text-title text-sm">Task Name / اسم
+                            المهمة</label>
                         <div class="relative">
-                            <font-awesome-icon
-                                icon="fa-solid fa-pen-to-square"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 text-sub/50 text-sm"
-                            />
-                            <input
-                                id="title"
-                                type="text"
-                                placeholder="e.g. Finish the API connection"
+                            <font-awesome-icon icon="fa-solid fa-pen-to-square"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 text-sub/50 text-sm" />
+                            <input id="title" type="text" placeholder="e.g. Finish the API connection"
                                 v-model="formDate.title"
                                 class="form-input pl-11 w-full bg-background border border-custom-border rounded-xl px-4 py-3 text-title placeholder-sub/40 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
-                                required
-                            />
+                                required />
                         </div>
                     </div>
 
                     <div class="flex flex-col gap-1.5">
-                        <label for="description" class="form-label font-semibold text-title text-sm"
-                            >description / وصف المهمة</label
-                        >
+                        <label for="description" class="form-label font-semibold text-title text-sm">description / وصف
+                            المهمة</label>
                         <div class="relative">
-                            <textarea
-                                id="description"
-                                placeholder="Write some details about this task..."
-                                v-model="formDate.description"
-                                rows="4"
-                                class="form-input pl-6 w-full bg-background border border-custom-border rounded-xl px-4 py-3 text-title placeholder-sub/40 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none"
-                            ></textarea>
+                            <textarea id="description" placeholder="Write some details about this task..."
+                                v-model="formDate.description" rows="4"
+                                class="form-input pl-6 w-full bg-background border border-custom-border rounded-xl px-4 py-3 text-title placeholder-sub/40 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none"></textarea>
                         </div>
                     </div>
 
-                    <div class="flex gap-3 pt-2">
+                    <div class="flex justify-end gap-3 pt-2">
                         <button type="button" @click="router.push('/tasks')" class="btn-secondary">
                             Cancel / إلغاء
                         </button>
 
-                        <button
-                            type="submit"
-                            class="btn-primary flex-1 flex items-center justify-center gap-2 bg-accent hover:bg-accent-dark text-white font-medium py-3 rounded-xl shadow-lg shadow-accent/20 transition-all disabled:opacity-50"
-                            :disabled="isLoading || !formDate.title"
-                        >
-                            <font-awesome-icon
-                                v-if="isLoading"
-                                icon="fa-solid fa-spinner"
-                                class="animate-spin text-sm"
-                            />
+                        <button type="submit" class="btn-primary md:p-4" :disabled="isLoading || !formDate.title">
+                            <font-awesome-icon v-if="isLoading" icon="fa-solid fa-spinner"
+                                class="animate-spin text-sm" />
 
                             <span v-if="isAdd">
                                 {{
